@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/autofs/ruby/sshan/L25v8_SN_tracer_source/animL5dyewind/src'
+let g:netrw_dirhist_2='/autofs/ruby/sshan/newNCOPS/NCOPS_0710/model/3D/input/climat4small_Aug6'
+let g:netrw_dirhist_3='/autofs/dqtwo/sshan/anim/tideanalysis'
+let g:netrw_dirhist_4='/autofs/ruby/sshan/L2notide/POM/model/data'
+let g:netrw_dirhist_5='/home/sshan/.mutt'
+let g:netrw_dirhist_6='/home/sshan/.mutt/sig'
+let g:netrw_dirhist_7='/home/sshan/.mutt'
+let g:netrw_dirhist_8='/etc/rc2.d'

@@ -1,0 +1,514 @@
+if &term == 'xterm'
+	set t_Co=16
+	highlight Normal ctermbg=White ctermfg=Black
+	highlight Visual ctermbg=Black ctermfg=Grey
+endif
+	set t_Co=256
+
+
+:inoremap ( ()<++><ESC>hhhhi
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {}<++><ESC>hhhhi
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<++><ESC>hhhhi
+:inoremap ] <c-r>=ClosePair(']')<CR>
+
+function ClosePair(char)
+if getline('.')[col('.') - 1] == a:char
+return "\<Right>"
+else
+return a:char
+endif
+endf
+
+
+
+
+
+
+
+
+set number
+set numberwidth=1
+highlight lineNr ctermfg=lightblue
+" An example for a vimrc file.
+"
+" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Last change:	2002 Sep 19
+"
+" To use it, copy it to
+"     for Unix and OS/2:  ~/.vimrc
+"	      for Amiga:  s:.vimrc
+"  for MS-DOS and Win32:  $VIM\_vimrc
+"	    for OpenVMS:  sys$login:.vimrc
+
+" When started as "evim", evim.vim will already have done these settings.
+if v:progname =~? "evim"
+  finish
+endif
+
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+"
+">>-------------------------Modified by ShiliangShan-------------------------
+  "set backupdir=./.vimbackup,./tmp,~/tmp
+  set backupdir=~/tmp
+"The 'directory' option controls where swap files go. 
+"If your working directory is not writable, Vim will put the swap file in one of the specified places.
+  set directory=~/tmp
+"<<-----------------------Wed Jun 30 11:53:47 ADT 2010-----------------------
+"
+endif
+set history=50		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+
+" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+" let &guioptions = substitute(&guioptions, "t", "", "g")
+
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" This is an alternative that also works in block mode, but the deleted
+" text is lost and it only works for putting the current register.
+"vnoremap p "_dp
+
+" Switch syntax highlighting on, when the terminal has colors
+" Also switch on highlighting the last used search pattern.
+if &t_Co > 2 || has("gui_running")
+  syntax on
+  set hlsearch
+endif
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+
+  " Enable file type detection.
+  " Use the default filetype settings, so that mail gets 'tw' set to 72,
+  " 'cindent' is on in C files, etc.
+  " Also load indent files, to automatically do language-dependent indenting.
+  filetype plugin indent on
+
+  " Put these in an autocmd group, so that we can delete them easily.
+  augroup vimrcEx
+  au!
+
+  " For all text files set 'textwidth' to 78 characters.
+  autocmd FileType text setlocal textwidth=78
+
+  " When editing a file, always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+  augroup END
+
+else
+
+  set autoindent		" always set autoindenting on
+
+endif " has("autocmd")
+
+
+
+"Sat Jul 18 13:07:39 ADT 2009
+"let g:colors_name = "xyzzy"
+"let g:Favcolorschemes = ["darkblue","morning","shine","evening"]
+
+"function SetTimeOfDayColors()
+	" currenthour will be 0, 1, 2, or 3
+"	let g:Currenthour = (strftime("%H") + 0) / 6
+"	if  g:colors_name !~ g:Favcolorschemes[g:Currenthour]
+"		execute "colorscheme " . g:Favcolorschemes[g:Currenthour]
+"		echo "execute " "colorscheme " . g:Favcolorschemes[g:Currenthour]
+"		redraw
+"	endif
+"endfunction
+
+"set statusline=%<%t%h%m%r\ \ %a\ %{strftime(\"%c\")}%=0x%B\
+"			\\ line:%l,\ \ col:%c%V\ %P
+"set statusline += \ %{SetTimeOfDayColors()}
+
+"colorscheme delek
+colorscheme zellner
+
+"set viminfo='100,f1
+
+"set cursorline
+set cursorcolumn
+highlight CursorColumn ctermbg=darkblue
+
+
+" 1. highlight arguments for normal terminals
+"
+"                                         *bold* *underline* *undercurl*
+"                                         *inverse* *italic* *standout*
+" term={attr-list}                        *attr-list* *highlight-term* *E418*
+"         attr-list is a comma separated list (without spaces) of the
+"         following items (in any order):
+"                 bold
+"                 underline
+"                 undercurl       not always available
+"                 reverse
+"                 inverse         same as reverse
+"                 italic
+"                 standout
+"                 NONE            no attributes used (used to reset it)
+            " 0       0       Black
+            " 1       4       DarkBlue
+            " 2       2       DarkGreen
+            " 3       6       DarkCyan
+            " 4       1       DarkRed
+            " 5       5       DarkMagenta
+            " 6       3       Brown, DarkYellow
+            " 7       7       LightGray, LightGrey, Gray, Grey
+            " 8       0*      DarkGray, DarkGrey
+            " 9       4*      Blue, LightBlue
+            " 10      2*      Green, LightGreen
+            " 11      6*      Cyan, LightCyan
+            " 12      1*      Red, LightRed
+            " 13      5*      Magenta, LightMagenta
+            " 14      3*      Yellow, LightYellow
+            " 15      7*      White
+highlight spellbad cterm=reverse
+highlight diffadd ctermbg=darkblue
+highlight difftext cterm=reverse
+"highlight diffdelete ctermbg=green
+"highlight diffchange ctermbg=darkblue
+"set foldcolumn =2
+set dictionary =/usr/share/dict/words
+"for R language
+let g:vimrplugin_term = "rxvt"
+
+
+set printoptions=number:y
+command! -nargs=* Hardcopy call DoMyPrint("<args>")
+function DoMyPrint(args)
+	 let colorsave=g:colors_name
+	  " >>---Modified by ShiliangShan--- 
+	  "the next line seems works before
+	  "color print
+	   " <<-Wed Aug 25 18:45:39 ADT 2010- 
+	   exec "hardcopy ".a:args
+	    exec 'color '.colorsave
+endfunction
+
+"set spell
+map <F5> :%!xclip -i && xclip -o
+
+autocmd BufEnter *.m	compiler mlint
+
+   "May 17 2009 Shan"
+"au BufNew *.F let fortran_fixed_source=1
+"let fortran_fixed_source=1
+"let fortran_fold=1
+"let fortran_fold_conditionals=1
+"let fortran_do_enddo=1
+"let fortran_more_precise=1
+    let s:extfname = expand("%:e")
+    if s:extfname ==? "F"
+	let fortran_fixed_source=1
+	unlet! fortran_free_source
+    else
+	let fortran_free_source=1
+	unlet! fortran_fixed_source
+    endif
+
+
+
+"safe :X
+"set noswapfile
+"set nobackup
+"set nowritebackup
+"set viminfo=
+"
+"
+
+
+set ic
+    auto BufEnter * let &titlestring = hostname() . "/" . expand("%:p")
+    "auto BufEnter * let &titlestring = expand("%:p")
+    set title titlestring=%<%F%=%l/%L-%P titlelen=70
+
+hi Comment ctermfg=yellow 
+"ctermbg=black
+
+"vim-latex
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" " search in a singe file. This will confuse Latex-Suite. Set your grep
+" " program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
+"
+" " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults
+" to
+" " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" " The following changes the default filetype back to 'tex':
+let g:tex_flavor='pdflatex'
+"
+let g:Tex_DefaultTargetFormat='pdf'
+"let g:Tex_MultipleCompileFormats='dvi,pdf'
+let g:Tex_CompileRule_pdf='pdflatex -interaction=nonstopmode'
+"let g:Tex_ViewRule_pdf='xpdf -g 1280x1280'
+let g:Tex_ViewRule_pdf='xpdf -g 1280x1280 -z 125'
+nmap <Leader>t :!pdflatex % <CR>
+
+"set iskeyword+=: "\ref{f: }
+let tlist_tex_settings   = 'latex;s:sections;g:graphics;l:labels'       
+let tlist_make_settings  = 'make;m:makros;t:targets'     
+let Tlist_Use_Right_Window = 0                              
+let Tlist_Auto_Update=1                                     
+let Tlist_GainFocus_On_ToggleOpen=1                         
+let Tlist_Compact_Format=1 " Compact?                       
+let Tlist_WinWidth=100
+nnoremap <silent> <F8> <ESC>:TlistToggle<CR>
+
+"boxes
+  autocmd BufEnter * nmap ,mc !!boxes -d pound-cmt<CR>
+  autocmd BufEnter * vmap ,mc !boxes -d pound-cmt<CR>
+  autocmd BufEnter * nmap ,xc !!boxes -d pound-cmt -r<CR>
+  autocmd BufEnter * vmap ,xc !boxes -d pound-cmt -r<CR>
+  autocmd BufEnter *.html nmap ,mc !!boxes -d html-cmt<CR>
+  autocmd BufEnter *.html vmap ,mc !boxes -d html-cmt<CR>
+  autocmd BufEnter *.html nmap ,xc !!boxes -d html-cmt -r<CR>
+  autocmd BufEnter *.html vmap ,xc !boxes -d html-cmt -r<CR>
+  autocmd BufEnter *.[chly],*.[pc]c nmap ,mc !!boxes -d c-cmt<CR>
+  autocmd BufEnter *.[chly],*.[pc]c vmap ,mc !boxes -d c-cmt<CR>
+  autocmd BufEnter *.[chly],*.[pc]c nmap ,xc !!boxes -d c-cmt -r<CR>
+  autocmd BufEnter *.[chly],*.[pc]c vmap ,xc !boxes -d c-cmt -r<CR>
+  autocmd BufEnter *.C,*.cpp,*.java nmap ,mc !!boxes -d java-cmt<CR>
+  autocmd BufEnter *.C,*.cpp,*.java vmap ,mc !boxes -d java-cmt<CR>
+  autocmd BufEnter *.C,*.cpp,*.java nmap ,xc !!boxes -d java-cmt -r<CR>
+  autocmd BufEnter *.C,*.cpp,*.java vmap ,xc !boxes -d java-cmt -r<CR>
+  autocmd BufEnter *.F,*.f90,*.h nmap ,mc !!boxes -d fortran-cmt<CR>
+  autocmd BufEnter *.F,*.f90,*.h vmap ,mc !boxes -d fortran-cmt<CR>
+  autocmd BufEnter *.F,*.f90,*.h nmap ,xc !!boxes -d fortran-cmt -r<CR>
+  autocmd BufEnter *.F,*.f90,*.h vmap ,xc !boxes -d fortran-cmt -r<CR>
+  autocmd BufEnter *.m,*.tex nmap ,mc !!boxes -d tex-cmt<CR>
+  autocmd BufEnter *.m,*.tex vmap ,mc !boxes -d tex-cmt<CR>
+  autocmd BufEnter *.m,*.tex nmap ,xc !!boxes -d tex-cmt -r<CR>
+  autocmd BufEnter *.m,*.tex vmap ,xc !boxes -d tex-cmt -r<CR>
+  autocmd BufEnter .vimrc*,.exrc nmap ,mc !!boxes -d vim-cmt<CR>
+  autocmd BufEnter .vimrc*,.exrc vmap ,mc !boxes -d vim-cmt<CR>
+  autocmd BufEnter .vimrc*,.exrc nmap ,xc !!boxes -d vim-cmt -r<CR>
+  autocmd BufEnter .vimrc*,.exrc vmap ,xc !boxes -d vim-cmt -r<CR>
+  autocmd bufenter *.gri nmap ,mc !!boxes -d gri-cmt<cr>
+  autocmd BufEnter *.gri vmap ,mc !boxes -d gri-cmt<CR>
+  autocmd BufEnter *.gri nmap ,xc !!boxes -d gri-cmt -r<CR>
+  autocmd BufEnter *.gri vmap ,xc !boxes -d gri-cmt -r<CR>
+
+"file explorer tree
+let g:netrw_liststyle=3 " Use tree-mode as default view
+let g:netrw_browse_split=4 " Open file in previous buffer
+let g:netrw_preview=1 " preview window shown in a vertically split
+
+"warp
+command! -nargs=* Wrap set wrap linebreak nolist showbreak=...
+
+"let mapleader = ","
+" For those with sadly no function keys available
+"nn <F7> :setlocal spell! spell?<CR>
+" toggle spelling use \s
+imap <Leader>s <C-o>:setlocal spell! spelllang=en_ca<CR>
+nmap <Leader>s :setlocal spell! spelllang=en_ca<CR>
+autocmd BufNewFile,BufRead *.txt setlocal filetype=txt
+autocmd FileType txt setlocal spell spelllang=en_ca
+
+"toggle INSERT (paste)
+nmap <Leader>p :setlocal paste! <CR>
+imap <Leader>p <C-o>:setlocal paste! <CR>
+
+"toggle wrap 
+nmap <Leader>w :setlocal wrap! <CR>
+
+"toggle list 
+nmap <Leader>l :setlocal list! <CR>
+"tab
+nmap tl gt
+nmap th gT
+
+"txt highlight
+"au BufWinLeave *.txt mkview
+"au BufWinEnter *.txt silent loadview
+au BufRead *.txt set filetype=txt
+
+iabbrev myemail ssl.ouc@gmail.com
+
+" F5: Add a fortune and advance to the next one
+" mX			mark where we are
+" :sp ~/.fortunes<CR>	open a window on ~/.fortunes
+" gg			go to first line
+" d/^--/<CR>		delete until the next line starting with "--"
+" Gp			Go to the end and put the just deleted text there
+" :wq<CR>		Write the ~/.fortunes file and close the window
+" 'XG			Go to the last line of the original file
+" A<CR><Esc>		Add an empty line
+" p			put the fortune text
+" `X			return to where we started
+
+map <F5> mX:sp ~/.fortunes<CR>ggd/^--/<CR>Gp:wq<CR>'XGA<CR><Esc>p`X
+
+
+
+let mapleader = ","
+vmap <Leader>c :Snip <CR>
+imap <Leader>c <C-o>V:Snip <CR>
+nmap <Leader>c V:Snip <CR>
+"gri syntax hilighting
+au BufRead *.gri set filetype=gri
+
+nnoremap <silent> <expr> _ GetChar() 
+
+"VIm got a single key command for removal of a character,
+"a single key command for replace of a character, 
+"it should also have a single key command for insertion of a character.
+"i<char><Esc>" compared to _
+fun! GetChar() 
+     let a=getchar() 
+     if a=~128 
+        return "" 
+     else 
+        let a=nr2char(a) 
+        return "i" . a . "\e" . (a=="\r" ? "" : "l") 
+    endif 
+endfun
+
+"pressing M-8 will highlight all occurrences of the current word
+"<S-8> * will highlight & jumping the cursor to the next instance of 
+"that word in your buffer
+nnoremap <M-8> :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+"urxvt with --meta8 the alt key combinations gave cryptic characters (mostly
+"with accents, like ì) as output instead of the Alt key mapping. Solution:
+set termencoding=latin1
+
+set smartcase
+
+"silent 
+":Silent ls
+command! -nargs=1 Silent
+\ | execute ':silent !'.<q-args>
+\ | execute ':redraw!'
+
+"vimrc
+if has("autocmd")
+	autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+
+let mapleader = ","
+nmap <leader>v :tabedit $MYVIMRC<CR>
+
+"three toggle number
+"relativenumber in vim 7.3
+let mapleader =","
+"nmap <silent> <F9> :call NumberToggle()<CR>
+nmap <leader>n :call NumberToggle()<CR>
+
+function! NumberToggle()
+    if exists("&rnu")
+        if &number
+            setlocal relativenumber
+        else
+            if &relativenumber
+                setlocal norelativenumber
+            else
+                setlocal number
+            endif
+        endif
+    else
+        if &number
+            setlocal nonumber
+        else
+            setlocal number
+        endif
+    endif
+endfunction 
+
+"Ctrl+^ switch buffers, useful in vim-latex master file and included file
+"http://vim.wikia.com/wiki/Avoid_scrolling_when_switch_buffers
+" When switching buffers, preserve window view.
+if v:version >= 700
+  au BufLeave * let b:winview = winsaveview()
+  au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+endif
+
+"redirct content to a file
+"In the file to be searched:
+":call NotHere("^pattern")
+function! NotHere(pat)
+  redir! >nothere.txt
+  execute "silent v/" . a:pat . "/"
+  redir end
+endfunction
+"OR
+"redir >Nothere.txt | exe "silent v/^pattern/" | redir end
+
+
+" Now, I was able to finally get VIM to paste the clipboard as I like it,
+" pasting always at the cursor position, and leaving always the cursor
+" after the pasted content:
+
+let mapleader =","
+imap <leader>mp :call MyPaste()<CR>
+function! MyPaste()
+   if col(".") == col("$")
+     execute "normal \"+gp"
+     call setpos(".", [0, line("."), col("$"), 0])
+   else
+     execute "normal \"+gP"
+   endif
+   return ""
+endfunction 
+
+"reset mapleaer to \\ for vim latex \ll \lv
+let mapleader = "\\"
+
+"add line number
+"OR using linux program :%!nl
+function! LineIt()
+  :%s/^/\=line('.') . '. '/
+endfunction
+
+"add the number "5" to each number? And the addition
+"result will replace the previous number? 
+":1,$s/^.*$/\=printf("%d", getline(".")+5)/ 
+"OR
+":%s/\d\+/\=submatch(0)+5/g
+"%g/\d/normal 05
+"^A is obtained by hitting Ctrl-V followed by Ctrl-A.
+
+
+"Tlist
+map <c-w><c-u> :TlistSessionLoad tagslist<cr>
+
+"gri
+let mapleader = "\\"
+map <leader>g :call Gri()<cr>
+function! Gri()
+:silent !gri % && L gv
+:redraw!
+endfunction
+
+"surround plugin
+"let g:surround_insert_tail = "<++>"
+
+"Conque plugin
+function! s:Terminal()
+  execute 'ConqueTermSplit bash --login'
+endfunction
+command! Terminal call s:Terminal()
+
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
